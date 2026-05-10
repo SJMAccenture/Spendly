@@ -1,0 +1,204 @@
+/* ------------------------------------------------------------------ */
+/* Landing hero — overrides style.css                                  */
+/* ------------------------------------------------------------------ */
+
+.hero {
+    display: block;
+    text-align: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem 4rem;
+    grid-template-columns: none;
+    gap: 0;
+    align-items: initial;
+}
+
+.hero-inner {
+    display: block;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    margin-bottom: 2.25rem;
+}
+
+.hero-badge-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.hero-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6.4vw, 4.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+}
+
+.hero-title-accent {
+    color: var(--accent);
+    font-style: normal;
+}
+
+.hero-subtitle {
+    font-size: 1.125rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 4rem;
+    align-items: center;
+}
+
+.hero-btn {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.95rem 1.85rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.hero-btn:hover { background: var(--accent); }
+
+/* Browser-window mockup */
+.hero-window {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-align: left;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
+}
+
+.hero-window-dots {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    padding: 0.25rem 0.25rem 0;
+}
+
+.hero-window-dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-red { background: #ef9a9a; }
+.dot-yellow { background: #f1ca64; }
+.dot-green { background: #8cd4b6; }
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hero-stat {
+    background: var(--paper-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.4rem 1.3rem;
+}
+
+.hero-stat-label {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.55rem;
+}
+
+.hero-stat-value {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    margin-bottom: 0.55rem;
+}
+
+.hero-stat-delta {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.hero-stat-delta-up { color: var(--danger); }
+.hero-stat-delta-good { color: var(--accent); }
+
+.hero-stat-foot {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+}
+
+.hero-cats {
+    background: var(--paper-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+}
+
+.hero-cat {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.hero-cat-label {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+}
+
+.hero-cat-track {
+    height: 8px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.hero-cat-bar {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.hero-cat-food { background: #e89b3a; }
+.hero-cat-travel { background: #5b8fc4; }
+.hero-cat-bills { background: #8b6fb5; }
+
+@media (max-width: 760px) {
+    .hero { padding: 3.5rem 1rem 2.5rem; }
+    .hero-stats { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; }
+    .hero-btn { width: 100%; text-align: center; }
+}
