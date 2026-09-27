@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Profile — Spendly{% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% for category, message in messages %}
+    <div class="auth-error">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
 <div class="profile-page">
 
   {# ── Profile header ── #}
@@ -15,6 +20,32 @@
       </div>
     </div>
   </div>
+
+  {# ── Date filter ── #}
+  <form class="filter-form" method="GET" action="{{ url_for('profile') }}">
+    <div class="filter-fields">
+      <div class="form-group">
+        <label for="date_from">From</label>
+        <input type="date" id="date_from" name="date_from"
+               class="form-input" value="{{ date_from }}">
+      </div>
+      <div class="form-group">
+        <label for="date_to">To</label>
+        <input type="date" id="date_to" name="date_to"
+               class="form-input" value="{{ date_to }}">
+      </div>
+      <button type="submit" class="btn-primary">Apply</button>
+      {% if filter_active %}
+        <a href="{{ url_for('profile') }}" class="btn-ghost">Clear</a>
+      {% endif %}
+    </div>
+  </form>
+
+  {% if filter_active %}
+    <p class="filter-badge">
+      Filtered: {{ date_from }} to {{ date_to }}
+    </p>
+  {% endif %}
 
   {# ── Stats row ── #}
   <div class="stats-row">
