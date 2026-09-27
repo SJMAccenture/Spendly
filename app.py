@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import get_db, init_db, seed_db, get_user_by_email, get_user_by_id, create_user
+from database.queries import get_recent_transactions, get_summary_stats, get_category_breakdown
 
 app = Flask(__name__)
 app.secret_key = "spendly-dev-secret"
@@ -92,33 +93,30 @@ def profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
+    uid = session["user_id"]
+    db_user = get_user_by_id(uid)
+    if not db_user:
+        session.clear()
+        return redirect(url_for("login"))
+
+    words = db_user["name"].split()
+    initials = (words[0][0] + words[-1][0]).upper() if len(words) > 1 else words[0][:2].upper()
+
+    from datetime import datetime
+    member_since = datetime.strptime(
+        db_user["created_at"][:10], "%Y-%m-%d"
+    ).strftime("%#d %B %Y")
+
     user = {
-        "name": "Simran Naidu",
-        "email": "simran.naidu279@gmail.com",
-        "member_since": "1 September 2026",
-        "initials": "SN",
+        "name": db_user["name"],
+        "email": db_user["email"],
+        "member_since": member_since,
+        "initials": initials,
     }
-    stats = {
-        "total_spent": "₹12,450",
-        "transactions": 18,
-        "top_category": "Food",
-    }
-    expenses = [
-        {"date": "23 Sep 2026", "description": "Grocery run",      "category": "Food",          "amount": "₹850"},
-        {"date": "21 Sep 2026", "description": "Metro pass",       "category": "Transport",     "amount": "₹500"},
-        {"date": "18 Sep 2026", "description": "Electricity bill", "category": "Bills",         "amount": "₹2,100"},
-        {"date": "15 Sep 2026", "description": "Pharmacy",         "category": "Health",        "amount": "₹320"},
-        {"date": "12 Sep 2026", "description": "Movie tickets",    "category": "Entertainment", "amount": "₹600"},
-        {"date": "10 Sep 2026", "description": "Clothes",          "category": "Shopping",      "amount": "₹2,200"},
-    ]
-    categories = [
-        {"name": "Food",          "amount": "₹3,200", "percent": 26},
-        {"name": "Shopping",      "amount": "₹2,800", "percent": 22},
-        {"name": "Bills",         "amount": "₹2,100", "percent": 17},
-        {"name": "Transport",     "amount": "₹1,950", "percent": 16},
-        {"name": "Health",        "amount": "₹1,400", "percent": 11},
-        {"name": "Entertainment", "amount": "₹1,000", "percent":  8},
-    ]
+    stats      = get_summary_stats(uid)
+    expenses   = get_recent_transactions(uid)
+    categories = get_category_breakdown(uid)
+
     return render_template("profile.html",
         user=user, stats=stats, expenses=expenses, categories=categories)
 
