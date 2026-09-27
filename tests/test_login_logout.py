@@ -112,6 +112,6 @@ def test_nav_shows_login_register_when_logged_out(client):
 
 def test_nav_shows_logout_when_logged_in(client):
     client.post("/login", data={"email": "test@example.com", "password": "correct"})
-    r = client.get("/")
+    r = client.get("/profile")
     assert b"Sign out" in r.data or b"logout" in r.data.lower()
     assert b"Test User" in r.data

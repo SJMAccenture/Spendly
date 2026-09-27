@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Profile — Spendly{% endblock %}
+{% block content %}
+<div class="profile-page">
+
+  {# ── Profile header ── #}
+  <div class="profile-header">
+    <div class="avatar">{{ user.initials }}</div>
+    <div class="profile-identity">
+      <div class="profile-name">{{ user.name }}</div>
+      <div class="profile-email">{{ user.email }}</div>
+      <div class="profile-meta">
+        <i data-lucide="calendar" class="icon-xs"></i>
+        Member since {{ user.member_since }}
+      </div>
+    </div>
+  </div>
+
+  {# ── Stats row ── #}
+  <div class="stats-row">
+    <div class="stat-tile">
+      <i data-lucide="wallet" class="stat-icon"></i>
+      <div class="stat-value">{{ stats.total_spent }}</div>
+      <div class="stat-label">Total Spent</div>
+    </div>
+    <div class="stat-tile">
+      <i data-lucide="receipt" class="stat-icon"></i>
+      <div class="stat-value">{{ stats.transactions }}</div>
+      <div class="stat-label">Transactions</div>
+    </div>
+    <div class="stat-tile">
+      <i data-lucide="tag" class="stat-icon"></i>
+      <div class="stat-value">{{ stats.top_category }}</div>
+      <div class="stat-label">Top Category</div>
+    </div>
+  </div>
+
+  {# ── Recent Transactions ── #}
+  <section class="profile-section">
+    <h2 class="section-heading">
+      <i data-lucide="list" class="icon-sm"></i>
+      Recent Transactions
+    </h2>
+    <div class="table-wrap">
+      <table class="expense-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th class="col-amount">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in expenses %}
+          <tr>
+            <td class="col-date">{{ e.date }}</td>
+            <td>{{ e.description }}</td>
+            <td><span class="badge badge--{{ e.category | lower }}">{{ e.category }}</span></td>
+            <td class="col-amount">{{ e.amount }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {# ── Category breakdown ── #}
+  <section class="profile-section">
+    <h2 class="section-heading">
+      <i data-lucide="pie-chart" class="icon-sm"></i>
+      Spending by Category
+    </h2>
+    <style>
+      {% for c in categories %}
+      .cat-row--{{ loop.index }} { --pct: {{ c.percent }}%; }
+      {% endfor %}
+    </style>
+    <div class="cat-breakdown">
+      {% for c in categories %}
+      <div class="cat-row cat-row--{{ loop.index }}">
+        <span class="badge badge--{{ c.name | lower }}">{{ c.name }}</span>
+        <div class="cat-track">
+          <div class="cat-fill cat-fill--{{ c.name | lower }}"></div>
+        </div>
+        <span class="cat-amount">{{ c.amount }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+</div>
+{% endblock %}
