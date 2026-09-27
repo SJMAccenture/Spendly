@@ -113,12 +113,21 @@ def profile():
         "member_since": member_since,
         "initials": initials,
     }
-    stats      = get_summary_stats(uid)
-    expenses   = get_recent_transactions(uid)
-    categories = get_category_breakdown(uid)
+    date_from = request.args.get("date_from", "").strip() or None
+    date_to   = request.args.get("date_to",   "").strip() or None
+
+    if date_from and date_to and date_from > date_to:
+        flash("'From' date must be on or before 'To' date.", "error")
+        date_from = date_to = None
+
+    stats      = get_summary_stats(uid, date_from=date_from, date_to=date_to)
+    expenses   = get_recent_transactions(uid, date_from=date_from, date_to=date_to)
+    categories = get_category_breakdown(uid, date_from=date_from, date_to=date_to)
 
     return render_template("profile.html",
-        user=user, stats=stats, expenses=expenses, categories=categories)
+        user=user, stats=stats, expenses=expenses, categories=categories,
+        date_from=date_from or "", date_to=date_to or "",
+        filter_active=(date_from is not None and date_to is not None))
 
 
 @app.route("/expenses/add")
