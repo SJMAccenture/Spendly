@@ -24,8 +24,8 @@ def test_profile_returns_200_when_authenticated(client):
 def test_profile_shows_user_info(client):
     login(client)
     html = client.get("/profile").data.decode()
-    assert "Simran Naidu" in html
-    assert "simran.naidu279@gmail.com" in html
+    assert "Test User" in html
+    assert "test@example.com" in html
 
 
 def test_profile_shows_category_badges(client):
